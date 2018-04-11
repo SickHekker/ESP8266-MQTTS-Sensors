@@ -3,10 +3,10 @@
 #include <Adafruit_MQTT_Client.h>
 #include <DHT.h>
 
-//deepsleep duration in seconds
+// Deepsleep duration in seconds
 int sleep = 300;
 
-//DHT setup
+// DHT setup
 #define DHTPIN 12 //Change this if you want, this is D6 on a nodemcu board
 
 // Uncomment whatever type you're using!
@@ -14,11 +14,13 @@ int sleep = 300;
 //#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
 //#define DHTTYPE DHT21   // DHT 21 (AM2301)
 
+// Set the MQTT feeds to be used
 #define temperature_feed "/sensors/DHT/temperature"
 #define humidity_feed "/sensors/DHT/humidity"
 
 /************************* WiFi Access Point *********************************/
 
+WiFiClientSecure client;
 #define WLAN_SSID "wifissid"
 #define WLAN_PASS "wifipassword"
 
@@ -31,14 +33,14 @@ int sleep = 300;
 
 /****************************** Feeds ***************************************/
 
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+
 Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperature_feed);
 Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, humidity_feed);
 
 /*************************** Sketch Code ************************************/
 
-WiFiClientSecure client;
 DHT dht(DHTPIN, DHTTYPE);
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 void setup() {
 
@@ -105,6 +107,5 @@ void MQTT_connect() {
       ESP.deepSleep(sleep * 1000000);
     }
   }
-
   Serial.println("MQTT Connected!");
 }
