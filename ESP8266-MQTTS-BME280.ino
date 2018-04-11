@@ -16,6 +16,7 @@ int sleep = 300;
 
 /************************* WiFi Access Point *********************************/
 
+WiFiClientSecure client;
 #define WLAN_SSID "wifissid"
 #define WLAN_PASS "wifipassword"
 
@@ -28,15 +29,15 @@ int sleep = 300;
 
 /****************************** Feeds ***************************************/
 
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+
 Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperature_feed);
 Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, humidity_feed);
 Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, pressure_feed);
 
 /*************************** Sketch Code ************************************/
 
-WiFiClientSecure client;
 BME280I2C bme;
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 void setup() {
   Serial.begin(115200);
