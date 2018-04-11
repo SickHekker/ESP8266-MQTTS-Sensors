@@ -14,21 +14,16 @@ int sleep = 300;
 #define temperature_feed "/sensors/DS18B20/temperature"
 
 /************************* WiFi Access Point *********************************/
+
 #define WLAN_SSID "wifissid"
 #define WLAN_PASS "wifipassword"
+
 /************************* MQTT Broker Setup *********************************/
+
 #define AIO_SERVER      "mqttserver"
 #define AIO_SERVERPORT  8883                   // 8883 for MQTTS
 #define AIO_USERNAME    "mqttusername"
 #define AIO_KEY         "mqttpassword"
-
-WiFiClientSecure client;
-
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
-
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-
 
 /****************************** Feeds ***************************************/
 
@@ -36,6 +31,10 @@ Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperatu
 
 /*************************** Sketch Code ************************************/
 
+WiFiClientSecure client;
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 void setup() {
   Serial.begin(115200);
@@ -81,12 +80,10 @@ void loop() {
 
 void MQTT_connect() {
   int8_t ret;
-
   // Stop if already connected.
   if (mqtt.connected()) {
     return;
   }
-
   Serial.println("Connecting to MQTT... ");
 
   uint8_t retries = 2;
