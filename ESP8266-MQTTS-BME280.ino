@@ -6,7 +6,8 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-BME280I2C bme;
+// Deepsleep duration in seconds.
+int sleep = 300;
 
 /************************* WiFi Access Point *********************************/
 #define WLAN_SSID "wifissid"
@@ -18,12 +19,6 @@ BME280I2C bme;
 #define AIO_USERNAME    "mqttusername"
 #define AIO_KEY         "mqttpassword"
 
-
-WiFiClientSecure client;
-
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-
-
 /****************************** Feeds ***************************************/
 
 Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, "/sensors/bme280/temperature");
@@ -32,12 +27,15 @@ Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, "/sensors/bm
 
 /*************************** Sketch Code ************************************/
 
-int wifitry = 0;
+WiFiClientSecure client;
+BME280I2C bme;
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 void setup() {
-
   Serial.begin(115200);
   delay(10);
+  
+  int wifitry = 0;
   
   Serial.println();
   Serial.print("Connecting to ");
@@ -85,13 +83,10 @@ void setup() {
   temperature_topic.publish(temperature);
   humidity_topic.publish(humidity);
   pressure_topic.publish(pressure);
-  
-  delay(100);
-  
+    
   Serial.println("Data posted to MQTT");
-  
+
   mqtt.disconnect();
-  
   Serial.println("MQTT disconnected, activating deepsleep");
   ESP.deepSleep(300e6);
   
@@ -123,6 +118,5 @@ void MQTT_connect() {
       ESP.deepSleep(300e6);
     }
   }
-
   Serial.println("MQTT Connected!");
 }
