@@ -7,3 +7,5 @@ MQTT: https://github.com/adafruit/Adafruit_MQTT_Library
 Library for the BME280:  
 BME280: https://github.com/finitespace/BME280/blob/master/src/BME280I2C.h  
   
+Library for the DHT:  
+DHT: https://github.com/adafruit/DHT-sensor-library
