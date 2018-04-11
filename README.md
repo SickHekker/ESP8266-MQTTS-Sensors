@@ -15,5 +15,5 @@ https://github.com/finitespace/BME280/blob/master/src/BME280I2C.h
 Library for the DHT:  
 https://github.com/adafruit/DHT-sensor-library
 
-Library for the DS18B20:
+Library for the DS18B20:  
 https://github.com/milesburton/Arduino-Temperature-Control-Library
