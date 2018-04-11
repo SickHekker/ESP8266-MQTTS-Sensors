@@ -4,13 +4,13 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-//deepsleep duration in seconds
+// Deepsleep duration in seconds
 int sleep = 300;
 
-//DHT setup
+// DHT setup
 #define ONE_WIRE_BUS 12 //Change this if you want, this is D6 on a nodemcu board
 
-//MQTT feed
+// Set the MQTT feeds to be used
 #define temperature_feed "/sensors/DS18B20/temperature"
 
 /************************* WiFi Access Point *********************************/
