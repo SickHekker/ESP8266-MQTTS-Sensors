@@ -1,20 +1,26 @@
 #include <ESP8266WiFi.h>
 #include <Adafruit_MQTT.h>
 #include <Adafruit_MQTT_Client.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include <DHT.h>
 
 // Deepsleep duration in seconds
 int sleep = 300;
 
 // DHT setup
-#define ONE_WIRE_BUS 12 //Change this if you want, this is D6 on a nodemcu board
+#define DHTPIN 12 //Change this if you want, this is D6 on a nodemcu board
+
+// Uncomment whatever type you're using!
+#define DHTTYPE DHT11   // DHT 11
+//#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+//#define DHTTYPE DHT21   // DHT 21 (AM2301)
 
 // Set the MQTT feeds to be used
-#define temperature_feed "/sensors/DS18B20/temperature"
+#define temperature_feed "/sensors/DHT/temperature"
+#define humidity_feed "/sensors/DHT/humidity"
 
 /************************* WiFi Access Point *********************************/
 
+WiFiClientSecure client;
 #define WLAN_SSID "wifissid"
 #define WLAN_PASS "wifipassword"
 
@@ -27,21 +33,21 @@ int sleep = 300;
 
 /****************************** Feeds ***************************************/
 
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+
 Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperature_feed);
+Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, humidity_feed);
 
 /*************************** Sketch Code ************************************/
 
-WiFiClientSecure client;
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(115200);
   delay(10);
-
+  
   int wifitry = 0;
-
+  
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(WLAN_SSID);
@@ -59,16 +65,20 @@ void setup() {
       ESP.deepSleep(sleep * 1000000);
     }
   }
-  sensors.begin();
+  dht.begin();
+
   MQTT_connect();
 
-  sensors.requestTemperatures();
-  float temperature = sensors.getTempCByIndex(0);
-  temperature_topic.publish(temperature);
-  
-  Serial.println(temperature);
-  Serial.println("Data posted to MQTT");
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
 
+  Serial.println(temperature);
+  Serial.println(humidity);
+
+  temperature_topic.publish(temperature);
+  humidity_topic.publish(humidity);
+
+  Serial.println("Data posted to MQTT");
   mqtt.disconnect();
   Serial.println("MQTT disconnected, activating deepsleep");
   ESP.deepSleep(sleep * 1000000);
@@ -85,7 +95,6 @@ void MQTT_connect() {
     return;
   }
   Serial.println("Connecting to MQTT... ");
-
   uint8_t retries = 2;
   while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
     Serial.println(mqtt.connectErrorString(ret));
