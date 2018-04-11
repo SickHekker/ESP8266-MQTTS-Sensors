@@ -2,6 +2,7 @@
 Arduino programs using secure mqtt to publish sensor data.  
 
 Deepsleep is set to 300 seconds (5 minutes) by default, don't forget to connect GPIO 16 to RST so the ESP can wake up.  
+Deepsleep will be activated when the program finishes, or when mqtt or wifi can't connect.
 
 Common library:  
 MQTT: https://github.com/adafruit/Adafruit_MQTT_Library  
