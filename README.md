@@ -7,10 +7,13 @@ Deepsleep will be activated when the program finishes, or when mqtt or wifi can'
 Note: i only tested the DHT code with a DHT11
 
 Common library:  
-MQTT: https://github.com/adafruit/Adafruit_MQTT_Library  
+https://github.com/adafruit/Adafruit_MQTT_Library  
   
 Library for the BME280:  
-BME280: https://github.com/finitespace/BME280/blob/master/src/BME280I2C.h  
+https://github.com/finitespace/BME280/blob/master/src/BME280I2C.h  
   
 Library for the DHT:  
-DHT: https://github.com/adafruit/DHT-sensor-library
+https://github.com/adafruit/DHT-sensor-library
+
+Library for the DS18B20:
+https://github.com/milesburton/Arduino-Temperature-Control-Library
