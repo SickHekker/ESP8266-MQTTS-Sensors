@@ -38,7 +38,6 @@ Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperatu
 
 
 void setup() {
-
   Serial.begin(115200);
   delay(10);
 
