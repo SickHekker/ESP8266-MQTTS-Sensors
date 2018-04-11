@@ -10,8 +10,10 @@
 int sleep = 300;
 
 /************************* WiFi Access Point *********************************/
+
 #define WLAN_SSID "wifissid"
 #define WLAN_PASS "wifipassword"
+
 /************************* MQTT Broker Setup *********************************/
 
 #define AIO_SERVER      "mqttserver"
@@ -85,13 +87,11 @@ void setup() {
   pressure_topic.publish(pressure);
     
   Serial.println("Data posted to MQTT");
-
   mqtt.disconnect();
   Serial.println("MQTT disconnected, activating deepsleep");
   ESP.deepSleep(300e6);
   
 }
-
 
 void loop() {
   ESP.deepSleep(300e6);
@@ -99,14 +99,11 @@ void loop() {
 
 void MQTT_connect() {
   int8_t ret;
-
   // Stop if already connected.
   if (mqtt.connected()) {
     return;
   }
-
   Serial.print("Connecting to MQTT... ");
-
   uint8_t retries = 2;
   while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
     Serial.println(mqtt.connectErrorString(ret));
