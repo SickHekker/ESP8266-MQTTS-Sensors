@@ -9,6 +9,11 @@
 // Deepsleep duration in seconds.
 int sleep = 300;
 
+// Set the MQTT feeds to be used
+#define temperature_feed "/sensors/BME280/temperature"
+#define humidity_feed "/sensors/BME280/humidity"
+#define pressure_feed "/sensors/BME280/pressure"
+
 /************************* WiFi Access Point *********************************/
 
 #define WLAN_SSID "wifissid"
@@ -23,9 +28,9 @@ int sleep = 300;
 
 /****************************** Feeds ***************************************/
 
-Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, "/sensors/bme280/temperature");
-Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, "/sensors/bme280/pressure");
-Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, "/sensors/bme280/humidity");
+Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperature_feed);
+Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, humidity_feed);
+Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, pressure_feed);
 
 /*************************** Sketch Code ************************************/
 
