@@ -3,6 +3,9 @@
 #include <Adafruit_MQTT_Client.h>
 #include <DHT.h>
 
+//deepsleep duration in seconds
+int sleep = 300;
+
 //DHT setup
 #define DHTPIN 12 //Change this if you want, this is D6 on a nodemcu board
 
@@ -60,7 +63,7 @@ void setup() {
     if (wifitry >= 20) {
       Serial.println("Can't connect to WiFi, activating deepsleep");
       wifitry = 0;
-      ESP.deepSleep(300e6);
+      ESP.deepSleep(sleep * 1000000);
     }
   }
   dht.begin();
@@ -81,13 +84,13 @@ void setup() {
   mqtt.disconnect();
 
   Serial.println("MQTT disconnected, activating deepsleep");
-  ESP.deepSleep(300e6);
+  ESP.deepSleep(sleep * 1000000);
 
 }
 
 
 void loop() {
-  ESP.deepSleep(300e6);
+  ESP.deepSleep(sleep * 1000000);
 }
 
 void MQTT_connect() {
@@ -108,7 +111,7 @@ void MQTT_connect() {
     delay(1000);  // wait 1 second
     retries--;
     if (retries == 0) {
-      ESP.deepSleep(300e6);
+      ESP.deepSleep(sleep * 1000000);
     }
   }
 
