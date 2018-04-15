@@ -76,8 +76,10 @@ void setup() {
   Serial.println(temperature);
   Serial.println(humidity);
 
+  delay(50);
   temperature_topic.publish(temperature);
   humidity_topic.publish(humidity);
+  delay(50);
 
   Serial.println("Data posted to MQTT");
   mqtt.disconnect();
@@ -104,9 +106,9 @@ void MQTT_connect() {
     delay(1000);  // wait 1 second
     retries--;
     if (retries == 0) {
+      Serial.println("Can't connect to MQTT, activating deepsleep");
       ESP.deepSleep(sleep * 1000000);
     }
   }
-  
   Serial.println("MQTT Connected!");
 }
