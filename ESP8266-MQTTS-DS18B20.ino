@@ -67,9 +67,13 @@ void setup() {
 
   sensors.requestTemperatures();
   float temperature = sensors.getTempCByIndex(0);
-  temperature_topic.publish(temperature);
   
   Serial.println(temperature);
+  
+  delay(50);
+  temperature_topic.publish(temperature);
+  delay(50);
+  
   Serial.println("Data posted to MQTT");
 
   mqtt.disconnect();
