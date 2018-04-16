@@ -59,7 +59,7 @@ void setup() {
     if (wifitry >= 20) {
       Serial.println("Can't connect to WiFi, activating deepsleep");
       wifitry = 0;
-      ESP.deepSleep(300e6);
+      ESP.deepSleep(sleep * 1000000);
     }
   }
 
@@ -69,7 +69,7 @@ void setup() {
 
   if (!bme.begin()) {
     Serial.println("Can't find the BME280 sensor, activating deepsleep");
-    ESP.deepSleep(300e6);
+    ESP.deepSleep(sleep * 1000000);
   }
   
   MQTT_connect();
@@ -95,12 +95,12 @@ void setup() {
   Serial.println("Data posted to MQTT");
   mqtt.disconnect();
   Serial.println("MQTT disconnected, activating deepsleep");
-  ESP.deepSleep(300e6);
+  ESP.deepSleep(sleep * 1000000);
   
 }
 
 void loop() {
-  ESP.deepSleep(300e6);
+  ESP.deepSleep(sleep * 1000000);
 }
 
 void MQTT_connect() {
@@ -110,7 +110,7 @@ void MQTT_connect() {
     return;
   }
   Serial.print("Connecting to MQTT... ");
-  uint8_t retries = 2;
+  uint8_t retries = 4;
   while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
     Serial.println(mqtt.connectErrorString(ret));
     Serial.println("Retrying MQTT connection in 1 second...");
@@ -118,7 +118,7 @@ void MQTT_connect() {
     delay(1000);  // wait 1 second
     retries--;
     if (retries == 0) {
-      ESP.deepSleep(300e6);
+      ESP.deepSleep(sleep * 1000000);
     }
   }
   
