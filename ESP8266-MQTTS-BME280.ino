@@ -110,12 +110,12 @@ void MQTT_connect() {
     return;
   }
   Serial.print("Connecting to MQTT... ");
-  uint8_t retries = 4;
+  uint8_t retries = 5;
   while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
     Serial.println(mqtt.connectErrorString(ret));
     Serial.println("Retrying MQTT connection in 1 second...");
     mqtt.disconnect();
-    delay(1000);  // wait 1 second
+    delay(500);  // wait a half second
     retries--;
     if (retries == 0) {
       ESP.deepSleep(sleep * 1000000);
