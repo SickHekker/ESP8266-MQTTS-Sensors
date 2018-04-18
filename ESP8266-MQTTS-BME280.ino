@@ -86,12 +86,14 @@ void setup() {
   Serial.println(humidity);
   Serial.println(pressure);
   
-  delay(100);
+  delay(50);
   
   temperature_topic.publish(temperature);
   humidity_topic.publish(humidity);
   pressure_topic.publish(pressure);
     
+  delay(50);
+  
   Serial.println("Data posted to MQTT");
   mqtt.disconnect();
   Serial.println("MQTT disconnected, activating deepsleep");
