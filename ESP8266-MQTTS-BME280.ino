@@ -32,8 +32,8 @@ WiFiClientSecure client;
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, temperature_feed);
-Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, humidity_feed);
-Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, pressure_feed);
+Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, pressure_feed);
+Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, humidity_feed);
 
 /*************************** Sketch Code ************************************/
 
