@@ -42,6 +42,8 @@ BME280I2C bme;
 void setup() {
   Serial.begin(115200);
   delay(10);
+  //i ran into problems with the mqtts after some lib updates, this seemed to fix it
+  client.setInsecure();
   
   int wifitry = 0;
   
